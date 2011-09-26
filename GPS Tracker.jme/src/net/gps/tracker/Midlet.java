@@ -43,7 +43,7 @@ public class Midlet extends MIDlet implements LocationListener {
             Altitude.setLayout(Item.LAYOUT_EXPAND | Item.LAYOUT_NEWLINE_AFTER);
             Message.setLayout(Item.LAYOUT_EXPAND | Item.LAYOUT_NEWLINE_AFTER);
             LocationProvider provider = LocationProvider.getInstance(null);
-            provider.setLocationListener(this, 20, -1, -1);
+            provider.setLocationListener(this, -1, -1, -1);
         }
         catch (Exception ex) {
             showMessage("Exception:", ex.toString());
@@ -60,14 +60,14 @@ public class Midlet extends MIDlet implements LocationListener {
     public void locationUpdated(LocationProvider provider, Location location) {
         Coordinates coordinates = location.getQualifiedCoordinates();
         if (location == null || coordinates == null) return;
+        Timestamp.setText(new Date().toString());
+        Speed.setText(Float.toString(location.getSpeed()));
+        Course.setText(Float.toString(location.getCourse()));
+        Latitude.setText(Double.toString(coordinates.getLatitude()));
+        Longitude.setText(Double.toString(coordinates.getLongitude()));
+        Altitude.setText(Float.toString(coordinates.getAltitude()));
 
         if (Distance(CoordinatesOnFile, coordinates) >= 0.0003) {
-            Timestamp.setText(new Date().toString());
-            Speed.setText(Float.toString(location.getSpeed()));
-            Course.setText(Float.toString(location.getCourse()));
-            Latitude.setText(Double.toString(coordinates.getLatitude()));
-            Longitude.setText(Double.toString(coordinates.getLongitude()));
-            Altitude.setText(Float.toString(coordinates.getAltitude()));
             CoordinatesOnFile = coordinates;
             SendToServer();
         }
