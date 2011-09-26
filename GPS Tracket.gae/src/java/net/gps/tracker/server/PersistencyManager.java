@@ -1,5 +1,7 @@
 package net.gps.tracker.server;
 
+import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -115,6 +117,14 @@ public class PersistencyManager {
     }
 
     @SuppressWarnings("unchecked")
+    public List<Coordinate> listLastCoordinates(Long UserID) {
+        Calendar C = Calendar.getInstance(); C.add(Calendar.HOUR, -8);
+        List<Coordinate> listCoordinates = listCoordinates(UserID, C.getTime());
+        if (listCoordinates.isEmpty()) listCoordinates = listCoordinates(UserID, 8);
+        return new ArrayList<Coordinate>(listCoordinates);
+    }
+
+    @SuppressWarnings("unchecked")
     public List<Coordinate> listCoordinates(java.lang.Long UserID, java.util.Date StartDate) {
         PersistenceManager pm = pmf.getPersistenceManager();
         Query query = pm.newQuery(Coordinate.class);
@@ -122,6 +132,17 @@ public class PersistencyManager {
         query.declareParameters("java.lang.Long user_id, java.util.Date start_date");
         query.setOrdering("timestamp descending");
         return (List<Coordinate>) query.execute(UserID, StartDate);
+    }
+
+    @SuppressWarnings("unchecked")
+    public List<Coordinate> listCoordinates(java.lang.Long UserID, int n) {
+        PersistenceManager pm = pmf.getPersistenceManager();
+        Query query = pm.newQuery(Coordinate.class);
+        query.setFilter("userId == user_id");
+        query.declareParameters("Long user_id");
+        query.setOrdering("timestamp descending");
+        query.setRange(0, n);
+        return (List<Coordinate>) query.execute(UserID);
     }
 
     public void removeCoordinate(Coordinate coordinate) {
@@ -163,4 +184,5 @@ public class PersistencyManager {
             pm.close();
         }
     }
+
 }

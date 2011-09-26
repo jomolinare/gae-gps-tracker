@@ -20,6 +20,8 @@ public interface GpsLocation {//extends RemoteService
 
     public List<Coordinate> listCoordinates(Long UserID);
 
+    public List<Coordinate> listLastCoordinates(Long UserID);
+
     public void createCoordinate(Coordinate coordinate);
 
     public void updateCoordinate(Coordinate coordinate);
