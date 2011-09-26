@@ -1,8 +1,8 @@
 package net.gps.tracker.server;
 
-import java.util.Date;
 import java.util.List;
 import java.util.ArrayList;
+
 //import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 import net.gps.tracker.shared.Coordinate;
 import net.gps.tracker.shared.User;
@@ -33,8 +33,8 @@ public class GpsLocationService implements GpsLocation {//extends RemoteServiceS
         return new ArrayList<Coordinate>(listCoordinates);
     }
 
-    public List<Coordinate> listCoordinates(Long UserID, Date StartDate) {
-        List<Coordinate> listCoordinates = pm.listCoordinates(UserID, StartDate);
+    public List<Coordinate> listLastCoordinates(Long UserID) {
+        List<Coordinate> listCoordinates = pm.listLastCoordinates(UserID);
         return new ArrayList<Coordinate>(listCoordinates);
     }
 

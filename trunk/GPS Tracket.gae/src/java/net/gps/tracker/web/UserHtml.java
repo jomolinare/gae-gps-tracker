@@ -2,7 +2,6 @@ package net.gps.tracker.web;
 
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.Calendar;
 import java.util.List;
 
 import javax.servlet.http.*;
@@ -18,9 +17,7 @@ public class UserHtml extends HttpServlet {
         response.setContentType("text/html");
         PersistencyManager pm = new PersistencyManager();
         User user = pm.getUser(request.getQueryString());
-        Calendar C = Calendar.getInstance();
-        C.add(Calendar.HOUR, -8);
-        List<Coordinate> list = pm.listCoordinates(user.getId(), C.getTime());
+        List<Coordinate> list = pm.listLastCoordinates(user.getId());
 
         PrintWriter writer = response.getWriter();
 
