@@ -2,11 +2,13 @@ package net.gps.tracker;
 
 import java.util.Date;
 import java.util.TimeZone;
+import java.util.Vector;
 import javax.microedition.io.Connector;
 import javax.microedition.io.HttpConnection;
 import javax.microedition.lcdui.Display;
 import javax.microedition.lcdui.Form;
 import javax.microedition.lcdui.Item;
+import javax.microedition.lcdui.List;
 import javax.microedition.lcdui.StringItem;
 import javax.microedition.location.Location;
 import javax.microedition.location.Coordinates;
@@ -67,36 +69,35 @@ public class Midlet extends MIDlet implements LocationListener {
         Longitude.setText(Double.toString(coordinates.getLongitude()));
         Altitude.setText(Float.toString(coordinates.getAltitude()));
 
-        if (Distance(CoordinatesOnFile, coordinates) >= 0.0003) {
-            CoordinatesOnFile = coordinates;
-            SendToServer();
+        try {
+            if (Distance(CoordinatesOnFile, coordinates) >= 0.0003) {
+                CoordinatesOnFile = coordinates;
+                SendToServer();
+            }
+        }
+        catch (Exception ex) {
+            showMessage("Exception:", ex.toString());
+            try { Thread.sleep(60000); } catch (Exception e) {}
+            showMessage(null, null);
         }
     }
 
-    private void SendToServer() {
-        new Thread() {
-            public void run() {
-                String URL = getAppProperty("GPS-Server-URL");
-                if (URL == null || URL.length() == 0) return;
-                String Query = URL+"?"+
-                    "ID="+getAppProperty("GPS-Device-ID")+
-                    "&T="+System.currentTimeMillis()+
-                    "&TZ="+URLEncode(TimeZone.getDefault().getID())+
-                    "&LAT="+Latitude.getText()+"&LON="+Longitude.getText()+
-                    "&C="+Course.getText()+"&S="+Speed.getText()+"&A="+Altitude.getText();
-                while (true) try {
-                    HttpConnection c = (HttpConnection)Connector.open(Query);
-                    String msg = c.getResponseMessage(); c.close();
-                    if (msg.equals("OK")) break;
-                    sleep(60000);
-                }
-                catch (Exception ex) {
-                    showMessage("Exception:", ex.toString());
-                    try { sleep(60000); } catch (Exception e) {}
-                    showMessage(null, null);
-                }
-            }
-        }.start();
+    Vector queue = new Vector();
+    private void SendToServer() throws Exception {
+        queue.addElement(getAppProperty("GPS-Server-URL")+"?"+
+            "ID="+getAppProperty("GPS-Device-ID")+
+            "&T="+System.currentTimeMillis()+
+            "&TZ="+URLEncode(TimeZone.getDefault().getID())+
+            "&LAT="+Latitude.getText()+"&LON="+Longitude.getText()+
+            "&C="+Course.getText()+"&S="+Speed.getText()+"&A="+Altitude.getText()
+        );
+        while (!queue.isEmpty()) {
+            String url = (String)queue.elementAt(0);
+            HttpConnection c = (HttpConnection)Connector.open(url);
+            String msg = c.getResponseMessage(); c.close();
+            if (!msg.equals("OK")) break;
+            else queue.removeElementAt(0);
+        }
     }
 
     public void startApp(){} public void pauseApp(){}
