@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent">
+
+<TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:stretchColumns="1">
+<TableRow>
+    <TextView
+        android:layout_span="2"
+        android:id="@+id/date_time"
+        android:textStyle="bold"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="10px"/>
+</TableRow>
+<TableRow>
+    <TextView
+        android:text="Longitude"
+        android:textStyle="bold"
+        android:layout_margin="10px"/>
+    <TextView
+        android:id="@+id/longitude"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="10px"/>
+</TableRow>
+<TableRow>
+    <TextView
+        android:text="Latitude"
+        android:textStyle="bold"
+        android:layout_margin="10px"/>
+    <TextView
+        android:id="@+id/latitude"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="10px"/>
+</TableRow>
+<TableRow>
+    <TextView
+        android:text="Accuracy"
+        android:textStyle="bold"
+        android:layout_margin="10px"/>
+    <TextView
+        android:id="@+id/accuracy"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="10px"/>
+</TableRow>
+<TableRow>
+    <TextView
+        android:text="Altitude"
+        android:textStyle="bold"
+        android:layout_margin="10px"/>
+    <TextView
+        android:id="@+id/altitude"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="10px"/>
+</TableRow>
+<TableRow>
+    <TextView
+        android:text="Speed"
+        android:textStyle="bold"
+        android:layout_margin="10px"/>
+    <TextView
+        android:id="@+id/speed"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="10px"/>
+</TableRow>
+<TableRow>
+    <TextView
+        android:text="Course"
+        android:textStyle="bold"
+        android:layout_margin="10px"/>
+    <TextView
+        android:id="@+id/course"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="10px"/>
+</TableRow>
+
+<TableRow>
+    <TextView
+        android:layout_span="2"
+        android:id="@+id/text"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"/>
+</TableRow>
+</TableLayout>
+
+</ScrollView>
