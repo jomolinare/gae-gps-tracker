@@ -65,7 +65,7 @@ public class MainActivity extends Activity implements LocationListener {
         text.setText("Provider Disabled: "+s);
     }
     public void onStatusChanged(String s, int i, Bundle b) {
-        text.setText("Status Changed: "+s);
+        text.setText("Status Changed: "+s+" "+i);
     }
 
     List<String> queue = new ArrayList<String>();
