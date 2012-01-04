@@ -8,12 +8,14 @@ import android.os.Bundle;
 import android.widget.TextView;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.TimeZone;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MainActivity extends Activity implements LocationListener {
+public class Main extends Activity implements LocationListener {
 
     protected TextView text, time,
             latitude, longitude, accuracy,
@@ -38,12 +40,20 @@ public class MainActivity extends Activity implements LocationListener {
             locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER,MIN_TIME,MIN_DISTANCE,this);
         }
         catch (Exception ex) {
-            text.setText(ex.toString());
+            log(ex.toString());
         }
     }
+    @Override
+    public void onStart() {super.onStart();log("START");}
+    @Override
+    public void onStop() {super.onStop();log("STOP");}
+    @Override
+    public void onPause() {super.onPause();log("PAUSE");}
+    @Override
+    public void onResume() {super.onResume();log("RESUME");}
+
     public void onLocationChanged(Location location) {
         try {
-            text.setText(null);
             time.setText(new Date(location.getTime()).toString());
             longitude.setText(Double.toString(location.getLongitude()));
             latitude.setText(Double.toString(location.getLatitude()));
@@ -54,20 +64,21 @@ public class MainActivity extends Activity implements LocationListener {
             SendToServer();
         }
         catch (Exception ex) {
-            text.setText(ex.toString());
+            log(ex.toString());
         }
     }
 
     public void onProviderEnabled(String s) {
-        text.setText("Provider Enabled: "+s);
+        log("Provider Enabled: "+s);
     }
     public void onProviderDisabled(String s) {
-        text.setText("Provider Disabled: "+s);
+        log("Provider Disabled: "+s);
     }
     public void onStatusChanged(String s, int i, Bundle b) {
-        text.setText("Status Changed: "+s+" "+i);
+        log("Status Changed: "+s+" "+i);
     }
 
+    int count = 1;
     List<String> queue = new ArrayList<String>();
     private void SendToServer() throws Exception {
         queue.add(getString(R.string.GPS_Server_URL) + "?"
@@ -80,12 +91,20 @@ public class MainActivity extends Activity implements LocationListener {
 
         while (!queue.isEmpty()) {
             URL url = new URL(queue.get(0));
+            log("["+(count++)+"] "+url.toString());
             HttpURLConnection c = (HttpURLConnection) url.openConnection();
             String msg = c.getResponseMessage();
             if (!msg.equals("OK")) break;
             else queue.remove(0);
             c.disconnect();
         }
+    }
+
+    private DateFormat DF =
+            new SimpleDateFormat("yyyy/MM/dd.HH:mm:ss");
+    public void log(String msg) {
+        String T = DF.format(new Date());
+        text.setText(T+' '+msg+'\n'+text.getText());
     }
 
     private static String URLEncode(String s) {
