@@ -69,13 +69,13 @@ public class Main extends Activity implements LocationListener {
     }
 
     public void onProviderEnabled(String s) {
-        log("Provider Enabled: "+s);
+        //log("Provider Enabled: "+s);
     }
     public void onProviderDisabled(String s) {
-        log("Provider Disabled: "+s);
+        //log("Provider Disabled: "+s);
     }
     public void onStatusChanged(String s, int i, Bundle b) {
-        log("Status Changed: "+s+" "+i);
+        //log("Status Changed: "+i+" "+s);
     }
 
     int count = 1;
@@ -101,7 +101,7 @@ public class Main extends Activity implements LocationListener {
     }
 
     private DateFormat DF =
-            new SimpleDateFormat("yyyy/MM/dd.HH:mm:ss");
+            new SimpleDateFormat("yyyy.MM.dd-HH:mm:ss");
     public void log(String msg) {
         String T = DF.format(new Date());
         text.setText(T+' '+msg+'\n'+text.getText());
