@@ -2,7 +2,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
      package="net.gps.tracker">
     <application android:icon="@drawable/icon">
-         <activity android:name=".Main" android:label="GPS Tracker">
+        <activity android:name=".Main" android:label="GPS Tracker">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
                 <category android:name="android.intent.category.LAUNCHER"/>
