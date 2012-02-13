@@ -18,7 +18,7 @@ import java.util.TimeZone;
 public class Main extends Service implements LocationListener {
 
     private static final long MIN_DISTANCE = 100; // Meters
-    private static final long MIN_TIME = 10000; // Milliseconds
+    private static final long MIN_TIME = 60000; // Milliseconds
 
     @Override
     public void onCreate() {
