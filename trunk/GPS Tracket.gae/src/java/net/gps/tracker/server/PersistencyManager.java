@@ -27,6 +27,22 @@ public class PersistencyManager {
         query.setUnique(true);
         return (User) query.execute(name);
     }
+    public User getUserByPhone(String phone) {
+        PersistenceManager pm = pmf.getPersistenceManager();
+        Query query = pm.newQuery(User.class);
+        query.setFilter("phone == number");
+        query.declareParameters("String number");
+        query.setUnique(true);
+        return (User) query.execute(phone);
+    }
+    public User getUserByEmail(String email) {
+        PersistenceManager pm = pmf.getPersistenceManager();
+        Query query = pm.newQuery(User.class);
+        query.setFilter("email == address");
+        query.declareParameters("String address");
+        query.setUnique(true);
+        return (User) query.execute(email);
+    }
 
     @SuppressWarnings("unchecked")
     public List<User> listUsers() {
