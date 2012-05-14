@@ -59,10 +59,8 @@ public class Main extends Service implements LocationListener {
                 URL url = new URL(queue.get(0));
                 log("[" + (count++) + "] " + url.toString());
                 HttpURLConnection c = (HttpURLConnection) url.openConnection();
-                String msg = c.getResponseMessage();
-                if (!msg.equals("OK")) break;
-                else queue.remove(0);
-                c.disconnect();
+                String msg = c.getResponseMessage(); c.disconnect();
+                if (msg.equals("OK")) queue.remove(0);
             }
         } catch (Exception ex) {
             log(ex.toString());
