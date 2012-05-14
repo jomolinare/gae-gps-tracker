@@ -96,6 +96,7 @@ public class Midlet extends MIDlet implements LocationListener {
             HttpConnection c = (HttpConnection)Connector.open(url);
             String msg = c.getResponseMessage(); c.close();
             if (msg.equals("OK")) queue.removeElementAt(0);
+            else break;
         }
     }
 
