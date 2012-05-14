@@ -60,7 +60,7 @@ public class Main extends Service implements LocationListener {
                 log("[" + (count++) + "] " + url.toString());
                 HttpURLConnection c = (HttpURLConnection) url.openConnection();
                 String msg = c.getResponseMessage(); c.disconnect();
-                if (msg.equals("OK")) queue.remove(0);
+                if (msg.equals("OK")) queue.remove(0); else break;
             }
         } catch (Exception ex) {
             log(ex.toString());
