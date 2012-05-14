@@ -48,7 +48,15 @@ public class SetUserLocation extends HttpServlet {
 
         PersistencyManager pm = new PersistencyManager();
         User user = pm.getUser(ID);
-        if (user == null) throw new RuntimeException("Invalid user ID");
+        if (user == null)
+            user = pm.getUserByPhone(ID);
+        if (user == null)
+            user = pm.getUserByEmail(ID);
+        if (user == null) {
+            user = new User();
+            user.setName(ID);
+            pm.createUser(user);
+        }
 
         Coordinate coordinate = new Coordinate(
                 user.getId(), timestamp, timezone,
