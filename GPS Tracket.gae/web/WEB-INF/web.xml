@@ -1,5 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <web-app version="2.5" xmlns="http://java.sun.com/xml/ns/javaee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd">
+    <session-config>
+        <session-timeout>30</session-timeout>
+    </session-config>
     <servlet-mapping>
         <servlet-name>NewUser</servlet-name>
         <url-pattern>/NewUser</url-pattern>
@@ -8,11 +11,10 @@
         <servlet-name>ListUsers</servlet-name>
         <url-pattern>/ListUsers</url-pattern>
     </servlet-mapping>
-    <session-config>
-        <session-timeout>
-            30
-        </session-timeout>
-    </session-config>
+    <servlet>
+        <servlet-name>gps-user-status</servlet-name>
+        <servlet-class>net.gps.tracker.web.GetUserStatus</servlet-class>
+    </servlet>
     <welcome-file-list>
         <welcome-file>google_app_engine.html</welcome-file>
     </welcome-file-list>
@@ -68,6 +70,10 @@
         <servlet-name>ListUsers</servlet-name>
         <servlet-class>net.gps.tracker.web.ListUsers</servlet-class>
     </servlet>
+    <servlet-mapping>
+        <servlet-name>gps-user-status</servlet-name>
+        <url-pattern>/status</url-pattern>
+    </servlet-mapping>
     <servlet-mapping>
         <servlet-name>gps-coordinates</servlet-name>
         <url-pattern>/coordinates</url-pattern>

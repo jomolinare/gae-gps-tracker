@@ -21,6 +21,8 @@ public class User implements Serializable {
     private String phone;
     @Persistent
     private String email;
+    @Persistent
+    private String status;
 
     public User() {
     }
@@ -30,6 +32,7 @@ public class User implements Serializable {
         this.name = name;
         this.phone = phone;
         this.email = email;
+        this.status = "N/A";
     }
 
     public void setId(Long ID) {
@@ -48,6 +51,10 @@ public class User implements Serializable {
         email = value;
     }
 
+    public void setStatus(String value) {
+        status = value;
+    }
+
     public Long getId() {
         return this.ID;
     }
@@ -62,5 +69,9 @@ public class User implements Serializable {
 
     public String getEmail() {
         return email;
+    }
+
+    public String getStatus() {
+        return status;
     }
 }

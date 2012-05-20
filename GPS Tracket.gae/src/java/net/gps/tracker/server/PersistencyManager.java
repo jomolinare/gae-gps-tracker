@@ -70,6 +70,7 @@ public class PersistencyManager {
             c.setName(user.getName());
             c.setPhone(user.getPhone());
             c.setEmail(user.getEmail());
+            c.setStatus(user.getStatus());
             pm.makePersistent(c);
             pm.currentTransaction().commit();
         } catch (Exception ex) {

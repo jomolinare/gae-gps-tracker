@@ -19,6 +19,7 @@
                     &amp;DT=<u>DateTime</u>&amp;TZ=<u>TimeZone</u>
                 </small>
             </li>
+            <li>/status?<u>user</u>[=ON|OFF]</li>
             <li>/list/user?<u>user</u></li>
             <li>/list</li>
             <li>/map/user?<u>user</u></li>
