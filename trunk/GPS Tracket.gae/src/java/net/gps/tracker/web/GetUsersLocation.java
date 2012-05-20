@@ -18,13 +18,13 @@ public class GetUsersLocation extends HttpServlet {
         PersistencyManager pm = new PersistencyManager();
         Map<User, Coordinate> list = pm.listCoordinates();
         PrintWriter writer = response.getWriter();
-        writer.println("User,TimeStamp,TimeZone,Speed,Course,Latitude,Longitude,Altitude");
+        writer.println("User,Status,TimeStamp,TimeZone,Speed,Course,Latitude,Longitude,Altitude");
         for (User user : list.keySet()) {
-            if (list.get(user) == null) {
-                continue;
-            }
+            if (list.get(user) == null) continue;
             Coordinate coordinate = list.get(user);
             writer.print(user.getName());
+            writer.print(',');
+            writer.print(user.getStatus());
             writer.print(',');
             writer.print(coordinate.getTimestamp());
             writer.print(',');
