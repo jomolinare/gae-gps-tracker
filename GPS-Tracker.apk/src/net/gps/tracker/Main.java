@@ -1,19 +1,19 @@
 package net.gps.tracker;
 
 import android.app.Activity;
+import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
-import android.location.Location;
 import android.os.Bundle;
 import android.widget.TextView;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.TimeZone;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import java.util.TimeZone;
 
 public class Main extends Activity implements LocationListener {
 
@@ -21,7 +21,7 @@ public class Main extends Activity implements LocationListener {
             latitude, longitude, accuracy,
             speed, altitude, course;
     private static final long MIN_DISTANCE = 100; // Meters
-    private static final long MIN_TIME = 10000; // Milliseconds
+    private static final long MIN_TIME = 60000; // Milliseconds
 
     @Override
     public void onCreate(Bundle icicle) {
