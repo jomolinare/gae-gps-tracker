@@ -8,6 +8,16 @@
     android:layout_height="fill_parent"
     android:stretchColumns="1">
 <TableRow>
+    <EditText
+        android:layout_span="2"
+        android:id="@+id/DeviceID"
+        android:onClick="SaveID"
+        android:textStyle="bold"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="10px"/>
+</TableRow>
+<TableRow>
     <TextView
         android:layout_span="2"
         android:id="@+id/date_time"
@@ -73,16 +83,15 @@
 </TableRow>
 <TableRow>
     <TextView
-        android:text="Course"
+        android:text="Bearing"
         android:textStyle="bold"
         android:layout_margin="10px"/>
     <TextView
-        android:id="@+id/course"
+        android:id="@+id/bearing"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_margin="10px"/>
 </TableRow>
-
 <TableRow>
     <TextView
         android:layout_span="2"

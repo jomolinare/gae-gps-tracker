@@ -2,6 +2,5 @@
 <resources>
     <string name="app_name">GPS Tracker</string>
     <!-- settings -->
-    <string name="GPS_Device_ID">User</string>
     <string name="GPS_Server_URL">http://gps.innody.net/coordinates</string>
 </resources>
