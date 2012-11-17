@@ -1,10 +1,14 @@
 package net.gps.tracker;
 
 import android.app.Activity;
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.EditText;
 import android.widget.TextView;
 import java.net.HttpURLConnection;
 import java.net.URL;
@@ -17,23 +21,31 @@ import java.util.TimeZone;
 
 public class Main extends Activity implements LocationListener {
 
+    private String DeviceID;
+    private EditText device;
     protected TextView text, time,
             latitude, longitude, accuracy,
-            speed, altitude, course;
+            speed, altitude, bearing;
     private static final long MIN_DISTANCE = 100; // Meters
     private static final long MIN_TIME = 60000; // Milliseconds
 
+    
     @Override
     public void onCreate(Bundle icicle) {
         super.onCreate(icicle);
         setContentView(R.layout.main);
+        SharedPreferences settings = getSharedPreferences(
+                getPackageName(), Context.MODE_PRIVATE);
+        DeviceID = settings.getString("DeviceID", null);
+        device = (EditText)findViewById(R.id.DeviceID);
+        device.setVisibility(DeviceID==null?View.VISIBLE:View.GONE);
         text = (TextView)findViewById(R.id.text);
         time = (TextView)findViewById(R.id.date_time);
         latitude = (TextView)findViewById(R.id.latitude);
         longitude = (TextView)findViewById(R.id.longitude);
         speed  = (TextView)findViewById(R.id.speed);
         altitude  = (TextView)findViewById(R.id.altitude);
-        course = (TextView)findViewById(R.id.course);
+        bearing = (TextView)findViewById(R.id.bearing);
         accuracy = (TextView)findViewById(R.id.accuracy);
         try {
             LocationManager locationManager = (LocationManager)getSystemService(LOCATION_SERVICE);
@@ -51,6 +63,17 @@ public class Main extends Activity implements LocationListener {
     public void onPause() {super.onPause();log("PAUSE");}
     @Override
     public void onResume() {super.onResume();log("RESUME");}
+    
+    public void SaveID(View v) {
+        DeviceID = device.getText().toString();
+        if (DeviceID.length() == 0) return;
+        device.setEnabled(false);
+        SharedPreferences settings = getSharedPreferences(
+                getPackageName(), Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = settings.edit();
+        editor.putString("DeviceID", DeviceID);
+        editor.commit();
+    }
 
     public void onLocationChanged(Location location) {
         try {
@@ -59,7 +82,7 @@ public class Main extends Activity implements LocationListener {
             latitude.setText(Double.toString(location.getLatitude()));
             speed.setText(Float.toString(location.getSpeed()));
             altitude.setText(Double.toString(location.getAltitude()));
-            course.setText(Float.toString(location.getBearing()));
+            bearing.setText(Float.toString(location.getBearing()));
             accuracy.setText(Float.toString(location.getAccuracy()));
             SendToServer();
         }
@@ -81,12 +104,13 @@ public class Main extends Activity implements LocationListener {
     int count = 1;
     List<String> queue = new ArrayList<String>();
     private void SendToServer() throws Exception {
+        if (DeviceID == null) return;
         queue.add(getString(R.string.GPS_Server_URL) + "?"
-            + "ID=" + getString(R.string.GPS_Device_ID)
+            + "ID=" + DeviceID
             + "&T=" + System.currentTimeMillis()
             + "&TZ=" + URLEncode(TimeZone.getDefault().getID())
             + "&LAT=" + latitude.getText() + "&LON=" + longitude.getText()
-            + "&C=" + course.getText() + "&S=" + speed.getText() + "&A=" + altitude.getText()
+            + "&C=" + bearing.getText() + "&S=" + speed.getText() + "&A=" + altitude.getText()
         );
 
         while (!queue.isEmpty()) {
@@ -104,7 +128,7 @@ public class Main extends Activity implements LocationListener {
         String T = DF.format(new Date());
         text.setText(T+' '+msg+'\n'+text.getText());
     }
-
+    //<editor-fold defaultstate="collapsed" desc="URL Encode">
     private static String URLEncode(String s) {
         StringBuilder str = new StringBuilder();
         for (int i = 0; i < s.length(); i++) {
@@ -135,4 +159,5 @@ public class Main extends Activity implements LocationListener {
         }
         return str.toString();
     }
+    //</editor-fold>
 }
