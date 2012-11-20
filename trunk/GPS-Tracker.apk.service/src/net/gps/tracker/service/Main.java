@@ -1,16 +1,22 @@
 package net.gps.tracker.service;
 
 import android.app.Service;
+import android.content.Context;
 import android.content.Intent;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
+import android.net.ConnectivityManager;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.IBinder;
+import android.provider.Settings;
 import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.lang.reflect.Field;
+import java.lang.reflect.Method;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.text.DateFormat;
@@ -22,12 +28,14 @@ import java.util.TimeZone;
 public class Main extends Service implements LocationListener {
 
     private static final long MIN_DISTANCE = 100; // Meters
-    private static final long MIN_TIME = 60000; // Milliseconds
+    private static final long MIN_TIME = 10000; // Milliseconds
     private static final long STATUS_CHECK_INTERVAL = 600000; // Milliseconds
     private Handler  handler = new Handler();
     
     private void startGPS() {
         try { log("Start GPS");
+            setMobileDataEnabled(this, true);
+            setGlobalPositionSystemEnabled(this, true);
             LocationManager locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
             locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, MIN_TIME, MIN_DISTANCE, this);
         }
@@ -135,6 +143,36 @@ public class Main extends Service implements LocationListener {
         String T = DF.format(new java.util.Date());
         android.util.Log.e(getPackageName(),T);
         android.util.Log.wtf(getPackageName(),ex);
+    }
+    protected void setGlobalPositionSystemEnabled(Context context, boolean enabled) {
+        try {
+            String provider = Settings.Secure.getString(
+                    context.getContentResolver(), 
+                    Settings.Secure.LOCATION_PROVIDERS_ALLOWED);
+            if(enabled != provider.contains("gps")){
+                final Intent intent = new Intent();
+                intent.setClassName("com.android.settings", 
+                        "com.android.settings.widget.SettingsAppWidgetProvider");
+                intent.addCategory(Intent.CATEGORY_ALTERNATIVE);
+                intent.setData(Uri.parse("3"));
+                context.sendBroadcast(intent);
+            }
+        }
+        catch (Exception e) {log(e);}
+    }
+    protected void setMobileDataEnabled(Context context, boolean enabled) {
+        try {
+            final ConnectivityManager conman = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+            final Class conmanClass = Class.forName(conman.getClass().getName());
+            final Field iConnectivityManagerField = conmanClass.getDeclaredField("mService");
+            iConnectivityManagerField.setAccessible(true);
+            final Object iConnectivityManager = iConnectivityManagerField.get(conman);
+            final Class iConnectivityManagerClass = Class.forName(iConnectivityManager.getClass().getName());
+            final Method setMobileDataEnabledMethod = iConnectivityManagerClass.getDeclaredMethod("setMobileDataEnabled", Boolean.TYPE);
+            setMobileDataEnabledMethod.setAccessible(true);
+            setMobileDataEnabledMethod.invoke(iConnectivityManager, enabled);
+        }
+        catch (Exception e) {log(e);}
     }
 
     //<editor-fold defaultstate="collapsed" desc="URL Encode">
