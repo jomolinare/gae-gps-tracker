@@ -3,5 +3,6 @@
     <string name="app_name">GPS Tracker service</string>
 
     <string name="GPS_Device_ID">User</string>
+    <string name="GPS_Status_URL">http://gps.innody.net/status</string>
     <string name="GPS_Server_URL">http://gps.innody.net/coordinates</string>
 </resources>
