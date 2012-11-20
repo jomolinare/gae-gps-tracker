@@ -6,7 +6,11 @@ import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
+import android.os.Handler;
 import android.os.IBinder;
+import java.io.BufferedReader;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.text.DateFormat;
@@ -19,26 +23,70 @@ public class Main extends Service implements LocationListener {
 
     private static final long MIN_DISTANCE = 100; // Meters
     private static final long MIN_TIME = 60000; // Milliseconds
-
-    @Override
-    public void onCreate() {
-        super.onCreate();
-        LocationManager locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
-        locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, MIN_TIME, MIN_DISTANCE, this);
+    private static final long STATUS_CHECK_INTERVAL = 600000; // Milliseconds
+    private Handler  handler = new Handler();
+    
+    private void startGPS() {
+        try { log("Start GPS");
+            LocationManager locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
+            locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, MIN_TIME, MIN_DISTANCE, this);
+        }
+        catch (Exception ex) { log(ex); }
+    }
+    private void stopGPS() {
+        try { log("Stop GPS");
+            LocationManager locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
+            locationManager.removeUpdates(this);
+        }
+        catch (Exception ex) { log(ex); }
+    }
+    private boolean isActive() {
+        try {
+            URL url = new URL(getString(R.string.GPS_Status_URL) 
+                    + "?" + getString(R.string.GPS_Device_ID));
+            HttpURLConnection c = (HttpURLConnection) url.openConnection();
+            String msg = c.getResponseMessage(); 
+            if (!msg.equals("OK")) return false;
+            InputStream is = c.getInputStream();
+            InputStreamReader isr = new InputStreamReader(is);
+            BufferedReader r = new BufferedReader(isr);
+            String txt = r.readLine();
+            c.disconnect();
+            log(url+" -> "+txt);
+            if (txt.equals("ON")) return true;
+        }
+        catch (Exception ex) { log(ex); }
+        return false;
     }
 
     @Override
-    public int onStartCommand(Intent intent, int flags, int startId) {
-        return super.onStartCommand(intent, flags, startId);
+    public void onCreate() {
+        log("onCreate");
+        super.onCreate();
+    }
+
+    @Override
+    public int onStartCommand(Intent intent, int flags, int ID) {
+        log("onStartCommand: "+intent);
+        int x = super.onStartCommand(intent, flags, ID);
+        handler.postDelayed(new Runnable() {
+            public void run() { log("STATUS_CHECK");
+               if (isActive()) startGPS(); else stopGPS(); 
+               handler.postDelayed(this,STATUS_CHECK_INTERVAL);
+            }
+        }, STATUS_CHECK_INTERVAL);
+        return x;
     }
 
     @Override
     public void onDestroy() {
+        log("onDestroy");
         super.onDestroy();
     }
 
     @Override
-    public IBinder onBind(Intent arg0) {
+    public IBinder onBind(Intent intent) {
+        log("onBind: "+intent);
         return null;
     }
     int count = 1;
@@ -62,9 +110,7 @@ public class Main extends Service implements LocationListener {
                 String msg = c.getResponseMessage(); c.disconnect();
                 if (msg.equals("OK")) queue.remove(0); else break;
             }
-        } catch (Exception ex) {
-            log(ex.toString());
-        }
+        } catch (Exception ex) { log(ex); }
     }
 
     public void onProviderEnabled(String s) {
@@ -78,12 +124,17 @@ public class Main extends Service implements LocationListener {
     public void onStatusChanged(String s, int i, Bundle b) {
         log("Status Changed: "+i+" "+s);
     }
-    private static DateFormat DF =
-            new SimpleDateFormat("yyyy.MM.dd-HH:mm:ss");
+    private final static DateFormat DF =
+            new SimpleDateFormat("yyyy.MM.dd HH:mm:ss");
 
     public void log(String msg) {
         String T = DF.format(new java.util.Date());
         android.util.Log.d(getPackageName(),T+' '+msg);
+    }
+    public void log(Exception ex) {
+        String T = DF.format(new java.util.Date());
+        android.util.Log.e(getPackageName(),T);
+        android.util.Log.wtf(getPackageName(),ex);
     }
 
     //<editor-fold defaultstate="collapsed" desc="URL Encode">
