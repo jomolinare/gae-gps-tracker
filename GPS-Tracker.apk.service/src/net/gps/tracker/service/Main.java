@@ -3,8 +3,8 @@ package net.gps.tracker.service;
 import android.app.Service;
 import android.content.Intent;
 import android.location.Location;
-import android.location.LocationManager;
 import android.location.LocationListener;
+import android.location.LocationManager;
 import android.os.Bundle;
 import android.os.IBinder;
 import java.net.HttpURLConnection;
@@ -68,24 +68,25 @@ public class Main extends Service implements LocationListener {
     }
 
     public void onProviderEnabled(String s) {
-        //log("Provider Enabled: "+s);
+        log("Provider Enabled: "+s);
     }
 
     public void onProviderDisabled(String s) {
-        //log("Provider Disabled: "+s);
+        log("Provider Disabled: "+s);
     }
 
     public void onStatusChanged(String s, int i, Bundle b) {
-        //log("Status Changed: "+i+" "+s);
+        log("Status Changed: "+i+" "+s);
     }
-    private DateFormat DF =
+    private static DateFormat DF =
             new SimpleDateFormat("yyyy.MM.dd-HH:mm:ss");
 
-    public void log(String msg) {/*
-        String T = DF.format(new Date());
-        text.setText(T+' '+msg+'\n'+text.getText());
-    */}
+    public void log(String msg) {
+        String T = DF.format(new java.util.Date());
+        android.util.Log.d(getPackageName(),T+' '+msg);
+    }
 
+    //<editor-fold defaultstate="collapsed" desc="URL Encode">
     private static String URLEncode(String s) {
         StringBuilder str = new StringBuilder();
         for (int i = 0; i < s.length(); i++) {
@@ -115,5 +116,7 @@ public class Main extends Service implements LocationListener {
             }
         }
         return str.toString();
-    }
+    }    
+    //</editor-fold>
+ 
 }
