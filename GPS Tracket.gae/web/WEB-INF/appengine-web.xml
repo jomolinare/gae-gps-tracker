@@ -4,4 +4,5 @@
                    xsi:schemaLocation='http://kenai.com/projects/nbappengine/downloads/download/schema/appengine-web.xsd appengine-web.xsd'>
     <application>gps-innody-net</application>
     <version>1</version>
+    <threadsafe>true</threadsafe>
 </appengine-web-app>

@@ -2,10 +2,10 @@ package net.gps.tracker.web;
 
 import java.io.IOException;
 import java.io.PrintWriter;
-
-import javax.servlet.http.*;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import net.gps.tracker.server.PersistencyManager;
-
 import net.gps.tracker.shared.User;
 
 public class GetUserStatus extends HttpServlet {
