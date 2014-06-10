@@ -29,11 +29,15 @@ public class PersistencyManager {
     }
     public User getUserByPhone(String phone) {
         PersistenceManager pm = pmf.getPersistenceManager();
-        Query query = pm.newQuery(User.class);
-        query.setFilter("phone == number");
-        query.declareParameters("String number");
-        query.setUnique(true);
-        return (User) query.execute(phone);
+        Query query = pm.newQuery("SELECT FROM " + User.class.getName());
+        User UniqueUser = null;
+        for (User user : (List<User>)query.execute()) {
+            if (user.getPhone().contains(phone))
+                if (UniqueUser != null)
+                    return null;
+                else UniqueUser = user;
+        }
+        return UniqueUser;
     }
     public User getUserByEmail(String email) {
         PersistenceManager pm = pmf.getPersistenceManager();
