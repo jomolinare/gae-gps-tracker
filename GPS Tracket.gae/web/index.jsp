@@ -12,12 +12,12 @@
 
         <ul>
             <li>/ListUsers</li>
-            <li>/NewUser?ID=<u>user</u>></li>
+            <li>/NewUser?ID=<u>user</u></li>
             <li>/coordinates?ID=<u>user</u>&amp;LAT=<u>latitude</u>&amp;LON=<u>longitude</u>
-                <small>
+                [
                     &amp;S=<u>speed</u>&amp;C=<u>corse</u>&amp;A=<u>altitude</u>
                     &amp;DT=<u>DateTime</u>&amp;TZ=<u>TimeZone</u>
-                </small>
+                ]
             </li>
             <li>/status?<u>user</u>[=ON|OFF]</li>
             <li>/list/user?<u>user</u></li>
