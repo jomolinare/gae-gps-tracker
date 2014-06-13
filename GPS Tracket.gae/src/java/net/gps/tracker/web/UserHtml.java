@@ -32,7 +32,7 @@ public class UserHtml extends HttpServlet {
 
         writer.println("<a href='javascript:location.reload(true)'>");
 
-        writer.print("<img border='0' style='width:100%' src='");
+        writer.print("<img border='0' style='height:100%' src='");
         writer.print("http://maps.google.com/maps/api/staticmap?");
         writer.print("size=480x640&sensor=true&maptype=roadmap");
         if (list.size() > 0) {

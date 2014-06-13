@@ -31,9 +31,9 @@ public class UsersHtml extends HttpServlet {
 
         writer.println("<a href='javascript:location.reload(true)'>");
 
-        writer.print("<img border='0' src='");
+        writer.print("<img border='0' style='height:100%' src='");
         writer.print("http://maps.google.com/maps/api/staticmap?");
-        writer.print("size=220x300&sensor=true&maptype=roadmap");
+        writer.print("size=480x640&sensor=true&maptype=roadmap");
 
         int i = 1;
         StringBuilder marks = new StringBuilder();
