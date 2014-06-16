@@ -5,10 +5,10 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>GPS Tracket</title>
+        <title>GPS Tracker</title>
     </head>
     <body>
-        <h1>GPS Tracket</h1>
+        <h1>GPS Tracker</h1>
 
         <ul>
             <li>/ListUsers</li>
