@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+    <CheckBoxPreference
+        android:key="@string/front_camera"
+        android:title="@string/front_camera_name"
+        android:summary="@string/front_camera_info"/>
+    <!--
+    <EditTextPreference
+        android:key="@string/email_account"
+        android:title="@string/email_account_name"
+        android:summary="@string/email_account_info"
+        android:inputType="textEmailAddress"/>
+    <EditTextPreference
+        android:key="@string/email_password"
+        android:title="@string/email_password_name"
+        android:summary="@string/email_password_info"
+        android:inputType="textPassword"/>
+    -->
+    <EditTextPreference
+        android:key="@string/email_subject"
+        android:title="@string/email_subject_name"
+        android:summary="@string/email_subject_info"
+        android:defaultValue="Android Motion Camera"/>
+    <EditTextPreference
+        android:key="@string/email_recipient"
+        android:title="@string/email_recipient_name"
+        android:summary="@string/email_recipient_info"
+        android:inputType="textEmailAddress"/>
+    <EditTextPreference
+        android:key="@string/pixel_tolerance"
+        android:title="@string/pixel_tolerance_name"
+        android:summary="@string/pixel_tolerance_info"
+        android:inputType="number" android:defaultValue="8"/>
+    <EditTextPreference
+        android:key="@string/motion_threshold"
+        android:title="@string/motion_threshold_name"
+        android:summary="@string/motion_threshold_info"
+        android:inputType="number" android:defaultValue="33"/>
+    <EditTextPreference
+        android:key="@string/file_delay"
+        android:title="@string/file_delay_name"
+        android:summary="@string/file_delay_info"
+        android:inputType="number" android:defaultValue="1"/>
+    <EditTextPreference
+        android:key="@string/email_delay"
+        android:title="@string/email_delay_name"
+        android:summary="@string/email_delay_info"
+        android:inputType="number" android:defaultValue="60"/>
+</PreferenceScreen>

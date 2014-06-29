@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">MoCam</string>
+    <string name="motion_on">motion:on</string>
+    <string name="motion_off">motion:off</string>
+    <string name="email_on">email:on</string>
+    <string name="email_off">email:off</string>
+    <string name="view">images</string>
+    <string name="preferences">preferences</string>
+    <string name="delete">delete</string>
+    <!-- preferences -->
+    <string name="front_camera">front_camera</string>
+    <string name="front_camera_name">front camera</string>
+    <string name="front_camera_info">Selection for using the camera in the front or in the back</string>
+    <string name="email_account">email_account</string>
+    <string name="email_account_name">email account</string>
+    <string name="email_account_info">email account for sending notifications</string>
+    <string name="email_password">email_password</string>
+    <string name="email_password_name">email password</string>
+    <string name="email_password_info">email password for sending notifications</string>
+    <string name="email_subject">email_subject</string>
+    <string name="email_subject_name">email subject</string>
+    <string name="email_subject_info">Subject of the email notification sent when motion is detected</string>
+    <string name="email_recipient">email_recipient</string>
+    <string name="email_recipient_name">email recipient</string>
+    <string name="email_recipient_info">E-mail address where to send notification when motion is detected</string>
+    <string name="pixel_tolerance">pixel_tolerance</string>
+    <string name="pixel_tolerance_name">pixel tolerance</string>
+    <string name="pixel_tolerance_info">Camera pixels tolerance for comparing colors (Increase value if the motion detection percentage is greater than 10% even if there is not movement)</string>
+    <string name="motion_threshold">motion_threshold</string>
+    <string name="motion_threshold_name">motion threshold</string>
+    <string name="motion_threshold_info">Motion detection threshold percentage for triggering saving images to file and/or sending them by email.</string>
+    <string name="file_delay">file delay</string>
+    <string name="file_delay_name">file delay</string>
+    <string name="file_delay_info">Minimum interval in seconds between images saved to file.</string>
+    <string name="email_delay">email delay</string>
+    <string name="email_delay_name">email delay</string>
+    <string name="email_delay_info">Minimum interval in seconds between images sent by email.</string>
+</resources>
