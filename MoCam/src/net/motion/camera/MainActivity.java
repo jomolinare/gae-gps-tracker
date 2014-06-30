@@ -191,9 +191,9 @@ public class MainActivity extends Activity implements SurfaceHolder.Callback,
         }
     }
     byte[] pixels; boolean busy; long millis;
-    public void onPreviewFrame(byte[] data, Camera camera) { log("onPreviewFrame");
+    public void onPreviewFrame(byte[] data, Camera c) { log("onPreviewFrame");
         long T = System.currentTimeMillis();
-        if (!busy && (T-millis) > 500) try {
+        if (!busy && (T-millis) > 1000) try {
             if (pixels == null) pixels = data;
             else {
                 int count = 0;
@@ -214,7 +214,7 @@ public class MainActivity extends Activity implements SurfaceHolder.Callback,
     }
 
     long file_delay_millis, email_delay_millis;
-    public void onPictureTaken(byte[] data, Camera camera) { log("onPictureTaken");
+    public void onPictureTaken(byte[] data, Camera c) { log("onPictureTaken");
         long T = System.currentTimeMillis();
         if (T - file_delay_millis > file_delay) try { 
             File file = new File(path+dir+DT.format(new Date())+".jpg");
@@ -229,8 +229,13 @@ public class MainActivity extends Activity implements SurfaceHolder.Callback,
         } catch (Exception ex) {
             writeException(ex);
         } finally {
-            busy = false;
-            camera.startPreview();
+            handler.postDelayed(new Runnable() {
+                public void run() {
+                    busy = false;
+                    camera.startPreview();
+                    log("Camera.startPreview");
+                }
+            },1000);
         }
     }
     //<editor-fold defaultstate="collapsed" desc="messages">
@@ -286,7 +291,7 @@ public class MainActivity extends Activity implements SurfaceHolder.Callback,
                 .getString(getString(resource),"0"));
     }
     public void onError(int i, Camera camera) {
-        showMessage("CAMERA ERROR !!! ");
+        showMessage("CAMERA ERROR !!!");
     }
     final static CharSequence ImageFormatName(int format) {
         switch (format) {
@@ -301,96 +306,3 @@ public class MainActivity extends Activity implements SurfaceHolder.Callback,
         }
     }
 }
-/*
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.ImageFormat;
-import android.graphics.Rect;
-import android.graphics.YuvImage;
-import java.io.ByteArrayOutputStream;
-
-void saveImage(Camera camera, byte[] data) {
-        try {
-            Camera.Parameters params = camera.getParameters();
-            Camera.Size s = params.getPreviewSize();
-            int format = params.getPreviewFormat();
-            final ByteArrayOutputStream out = new ByteArrayOutputStream();
-            switch (format) {
-                case ImageFormat.JPEG:
-                case ImageFormat.RGB_565:
-                    Bitmap bmp = BitmapFactory.decodeByteArray(data, 0, data.length);
-                    bmp.compress(Bitmap.CompressFormat.JPEG, 50, out);
-                    break;
-                case ImageFormat.NV21:
-                case ImageFormat.NV16:
-                case ImageFormat.YUY2:
-                    YuvImage img = new YuvImage(data, format, s.width, s.height, null);
-                    img.compressToJpeg(new Rect(0, 0, s.width, s.height), 50, out);
-                    break;
-                default:
-                    throw new RuntimeException("Invalid ImageFormat #" + format);
-            }
-            handler.post(new Runnable() {public void run() { 
-                try {
-                    File file = new File(path+dir+DT.format(new Date())+".jpg");
-                    showMessage(file.getName()); file.getParentFile().mkdirs();
-                    FileOutputStream f = new FileOutputStream(file.getAbsolutePath());
-                    f.write(out.toByteArray()); f.close();
-                    if (notify) {
-                        showMessage(recipients);
-                        mail.send(recipients, subject, 
-                            file.getName(),file.getAbsolutePath());                    
-                    }        
-                } catch (Exception ex) {
-                    showException(ex);
-                }
-            }});
-        } catch (Exception ex) {
-            showException(ex);
-        }
-    }
-*/
-        /*
-        Display display = getWindowManager().getDefaultDisplay();
-        info("Rotation: "+(90*display.getRotation()));
-        if(display.getRotation() == Surface.ROTATION_0) {
-            camera.setDisplayOrientation(CameraRotation);
-            params.setRotation(CameraRotation);
-        }
-        if(display.getRotation() == Surface.ROTATION_90) {
-            camera.setDisplayOrientation(CameraRotation-90);
-            params.setRotation(CameraRotation-90);
-        }
-        if(display.getRotation() == Surface.ROTATION_180) {// ?
-            camera.setDisplayOrientation(CameraRotation+90);
-            params.setRotation(CameraRotation+90);
-        }
-        if(display.getRotation() == Surface.ROTATION_270) {
-            camera.setDisplayOrientation(CameraRotation+90);
-            params.setRotation(CameraRotation+90);
-        }*/
-        /*
-        int fmt = params.getPreviewFormat();
-        info("FMT = "+ImageFormatName(fmt));
-        StringBuilder FMT = new StringBuilder("FMT: ");
-        for (int i : params.getSupportedPreviewFormats())
-            {FMT.append(ImageFormatName(i)).append(' ');}
-        info(FMT.toString());
-        
-        Size size = params.getPreviewSize();
-        StringBuilder SIZE = new StringBuilder("SIZE: ");
-        for (Size i : params.getSupportedPreviewSizes())
-            {SIZE.append(i.width).append('x').append(i.height).append(' ');
-            if (i.width*i.height > size.width*size.height) size = i;}
-        info(SIZE.toString());
-        params.setPreviewSize(size.width,size.height);
-        info("SIZE = "+size.width+'x'+size.height);
-        
-        int fps = params.getPreviewFrameRate();
-        StringBuilder FPS = new StringBuilder("FPS: ");
-        for (int i : params.getSupportedPreviewFrameRates())
-            {FPS.append(i).append(' '); if (i < fps) fps = i;}
-        info(FPS.toString());
-        params.setPreviewFrameRate(fps);
-        info("FPS = "+fps);
-        */
