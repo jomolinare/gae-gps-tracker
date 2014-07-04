@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">XMPP</string>
+
+    <string name="username">UserName</string>
+    <string name="password">PassWord</string>
+
+    <string name="listen">\?</string>
+    <string name="message">Message</string>
+
+    <string name="connect">CONNECT</string>
+    <string name="send">SEND</string>
+    <string name="disconnect">DISCONNECT</string>
+</resources>
