@@ -1,0 +1,1 @@
+Simple project for tracking members using a Java ME device.
